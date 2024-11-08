@@ -34,8 +34,7 @@ class ShellEmulator:
             for line in open(self.script_path, 'r'):
                 command = line.strip()
                 if command:
-                    pass
-                    # self.process_command(command)
+                    self.process_command(command)
             self.is_script_execution = False
             self.display_prompt()
 
@@ -43,10 +42,29 @@ class ShellEmulator:
         command_index = self.output.index("insert linestart")
         command = self.output.get(command_index, "end").strip().replace(f"{self.get_absolute_path()}$ ", "")
         self.output.insert(tk.END, "\n")
-        # self.process_command(command)
+        self.process_command(command)
         if not self.is_script_execution:
             self.display_prompt()
         return "break"
+
+    def process_command(self, command):
+        self.history.append(command)
+        if command.startswith('ls'):
+            self.ls()
+        elif command.startswith('cd'):
+            # self.cd(command)
+            pass
+        elif command == 'exit':
+            self.root.quit()
+            raise SystemExit
+        elif command.startswith('rev'):
+            # self.rev(command)
+            pass
+        elif command == 'history':
+            # self.show_history()
+            pass
+        else:
+            self.output.insert(tk.END, f"sh: {command}: command not found\n")
 
     def display_prompt(self):
         if not self.is_script_execution:
@@ -56,6 +74,34 @@ class ShellEmulator:
 
     def get_absolute_path(self):
         return '/' + self.current_dir if self.current_dir else '/'
+
+    def ls(self):
+        parts = self.history[-1].split(maxsplit=1)
+        path = parts[1] if len(parts) > 1 else ""
+        if path.startswith('/'):
+            full_path = path[1:]
+        else:
+            path_components = (self.current_dir.split('/') if self.current_dir else []) + path.split('/')
+            resolved_path = []
+            for component in path_components:
+                if component == "..":
+                    if resolved_path:
+                        resolved_path.pop()
+                elif component:
+                    resolved_path.append(component)
+            full_path = "/".join(resolved_path)
+        prefix = full_path + '/' if full_path else ''
+        files = [
+            name[len(prefix):] for name in self.fs_contents
+            if name.startswith(prefix) and '/' not in name[len(prefix):]
+        ]
+        if files:
+            self.output.insert(tk.END, '\n'.join(files) + '\n')
+        else:
+            if full_path in self.fs_contents:
+                self.output.insert(tk.END, '\n')
+            else:
+                self.output.insert(tk.END, f"ls: cannot access '{path}': No such file or directory\n")
 
 
 if __name__ == "__main__":
