@@ -52,8 +52,7 @@ class ShellEmulator:
         if command.startswith('ls'):
             self.ls()
         elif command.startswith('cd'):
-            # self.cd(command)
-            pass
+            self.cd(command)
         elif command == 'exit':
             self.root.quit()
             raise SystemExit
@@ -102,6 +101,26 @@ class ShellEmulator:
                 self.output.insert(tk.END, '\n')
             else:
                 self.output.insert(tk.END, f"ls: cannot access '{path}': No such file or directory\n")
+
+    def cd(self, command):
+        _, path = command.split()
+        if path.startswith('/'):
+            current_path = []
+            path_components = path[1:].split('/')
+        else:
+            current_path = self.current_dir.split('/') if self.current_dir else []
+            path_components = path.split('/')
+        for component in path_components:
+            if component == "..":
+                if current_path:
+                    current_path.pop()
+            elif component and ("/".join(current_path + [component]) in self.fs_contents) and \
+                    self.fs_contents["/".join(current_path + [component])].isdir():
+                current_path.append(component)
+            else:
+                self.output.insert(tk.END, f"sh: cd: {path}: No such file or directory\n")
+                return
+        self.current_dir = "/".join(current_path)
 
 
 if __name__ == "__main__":
