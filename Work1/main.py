@@ -59,8 +59,7 @@ class ShellEmulator:
         elif command.startswith('rev'):
             self.rev(command)
         elif command == 'history':
-            # self.show_history()
-            pass
+            self.show_history()
         else:
             self.output.insert(tk.END, f"sh: {command}: command not found\n")
 
@@ -144,6 +143,10 @@ class ShellEmulator:
                     self.output.insert(tk.END, '\n'.join(reversed_lines) + '\n')
         else:
             self.output.insert(tk.END, f"rev: cannot open {path}: No such file or directory\n")
+
+    def show_history(self):
+        numbered_history = [f"    {i + 1}  {command}" for i, command in enumerate(self.history)]
+        self.output.insert(tk.END, '\n'.join(numbered_history) + '\n')
 
 
 if __name__ == "__main__":
