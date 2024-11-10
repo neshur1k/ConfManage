@@ -57,8 +57,7 @@ class ShellEmulator:
             self.root.quit()
             raise SystemExit
         elif command.startswith('rev'):
-            # self.rev(command)
-            pass
+            self.rev(command)
         elif command == 'history':
             # self.show_history()
             pass
@@ -121,6 +120,30 @@ class ShellEmulator:
                 self.output.insert(tk.END, f"sh: cd: {path}: No such file or directory\n")
                 return
         self.current_dir = "/".join(current_path)
+
+    def rev(self, command):
+        _, path = command.split()
+        if path.startswith('/'):
+            full_path = path[1:]
+        else:
+            full_path_components = (self.current_dir.split('/') if self.current_dir else []) + path.split('/')
+            resolved_path = []
+            for component in full_path_components:
+                if component == "..":
+                    if resolved_path:
+                        resolved_path.pop()
+                elif component:
+                    resolved_path.append(component)
+            full_path = "/".join(resolved_path)
+        if full_path in self.fs_contents:
+            with tarfile.open(self.fs_path) as tar:
+                file_member = tar.getmember(full_path)
+                with tar.extractfile(file_member) as f:
+                    lines = f.read().decode('utf-8').splitlines()
+                    reversed_lines = [line[::-1] for line in lines]
+                    self.output.insert(tk.END, '\n'.join(reversed_lines) + '\n')
+        else:
+            self.output.insert(tk.END, f"rev: cannot open {path}: No such file or directory\n")
 
 
 if __name__ == "__main__":
