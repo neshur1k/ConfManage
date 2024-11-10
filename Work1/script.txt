@@ -1,0 +1,4 @@
+ls
+cd a/c
+rev file1.txt
+history
