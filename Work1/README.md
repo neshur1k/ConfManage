@@ -17,6 +17,7 @@
 </ul>
 Примеры использования:<br>
 Без стартового скрипта<br>
+
 ![image](https://github.com/user-attachments/assets/a01403ae-c803-44b0-88d6-2aa8d03e87f4)
 <br>Со стартовым скриптом<br>
 ![image](https://github.com/user-attachments/assets/d75c10c1-1f4e-4e51-b90d-79cc52631174)
