@@ -31,10 +31,11 @@ class ShellEmulator:
     def load_startup_script(self):
         if self.script_path and os.path.exists(self.script_path):
             self.is_script_execution = True
-            for line in open(self.script_path, 'r'):
-                command = line.strip()
-                if command:
-                    self.process_command(command)
+            with open(self.script_path, 'r') as script:
+                for line in script:
+                    command = line.strip()
+                    if command:
+                        self.process_command(command)
             self.is_script_execution = False
             self.display_prompt()
 
