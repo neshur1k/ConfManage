@@ -109,6 +109,18 @@ class ShellEmulatorTest(unittest.TestCase):
         self.assertEqual(self.emulator.history, [])
         os.remove("test_script_empty.txt")
 
+    def test_execute_command(self):
+        self.emulator.output.insert(tk.END, "ls")
+        self.emulator.execute_command()
+        output = self.output_stub.getvalue()
+        self.assertIn("a", output)
+
+    def test_execute_command_invalid(self):
+        self.emulator.output.insert(tk.END, "")
+        self.emulator.execute_command()
+        output = self.output_stub.getvalue()
+        self.assertIn("sh: : command not found", output)
+
     def test_process_command(self):
         self.emulator.process_command("ls")
         output = self.output_stub.getvalue()
