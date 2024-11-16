@@ -1,5 +1,6 @@
 import yaml
 import argparse
+import re
 
 
 class ConfigParser:
@@ -24,11 +25,37 @@ class ConfigParser:
             name, value = initialization.split("=")
             name = name.strip()
             value = value.strip()
-            self.constants[name] = value
+            if re.fullmatch(r"[A-Z]+", name):
+                value = self.get_value(value)
+                if value is None:
+                    print(f'Ошибка: {line}. Некорректное значение константы')
+                else:
+                    self.constants[name] = value
+            else:
+                print(f'Ошибка: {line}. Некорректное имя константы')
         elif initialization.count('=') > 1:
             print(f'Ошибка: {line}. Несколько знаков =')
         else:
             print(f'Ошибка: {line}. Нет инициализации')
+
+    def is_number(self, value):
+        try:
+            float(value)
+            return True
+        except ValueError:
+            return False
+
+    def get_value(self, value):
+        if value.startswith('q(') and value.endswith(')'):
+            return value[2:-1]
+        elif self.is_number(value):
+            value = float(value)
+            if value.is_integer():
+                return int(value)
+            else:
+                return value
+        else:
+            return None
 
     def print_yaml(self):
         yaml_data = yaml.dump(self.constants)

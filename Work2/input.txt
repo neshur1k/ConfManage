@@ -1,1 +1,3 @@
-def a = 12
+! Comment
+def A = q(string)
+def B = 12.5
