@@ -47,7 +47,7 @@ class ConfigParser:
 
     def get_value(self, value):
         if value.startswith('[') and value.endswith(']'):
-            pass
+            return self.process_arr(value[1:-1])
         if value.startswith('q(') and value.endswith(')'):
             return value[2:-1]
         elif value.startswith('@{') and value.endswith('}'):
@@ -61,6 +61,26 @@ class ConfigParser:
                 return value
         else:
             return None
+
+    def process_arr(self, value):
+        elements = []
+        buffer = ""
+        nested_level = 0
+
+        for char in value:
+            if char == ';' and nested_level == 0:
+                elements.append(self.get_value(buffer.strip()))
+                buffer = ""
+            else:
+                if char == '[':
+                    nested_level += 1
+                elif char == ']':
+                    nested_level -= 1
+                buffer += char
+
+        if buffer:
+            elements.append(self.get_value(buffer.strip()))
+        return elements
 
     def print_yaml(self):
         yaml_data = yaml.dump(self.constants)

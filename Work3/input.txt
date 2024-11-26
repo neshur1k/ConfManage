@@ -2,5 +2,6 @@
 def A = q(string)
 def B = 12.5
 def C = 12
-def D = @{E}
-! def ARR = [ 1; 2; q(3); q(string); asdf]
+def D = @{A}
+def E = A
+def ARR = [1; 2; [3; 4; q(hello)]; @{B}]
