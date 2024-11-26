@@ -25,10 +25,10 @@ class ConfigParser:
             name, value = initialization.split("=")
             name = name.strip()
             value = value.strip()
-            if re.fullmatch(r"[A-Z]+", name):
+            if re.fullmatch(r'[A-Z]+', name):
                 value = self.get_value(value)
                 if value is None:
-                    print(f'Ошибка: {line}. Некорректное значение константы')
+                    print(f'Ошибка: {line}. Константа задана некорректно')
                 else:
                     self.constants[name] = value
             else:
@@ -46,8 +46,13 @@ class ConfigParser:
             return False
 
     def get_value(self, value):
+        if value.startswith('[') and value.endswith(']'):
+            pass
         if value.startswith('q(') and value.endswith(')'):
             return value[2:-1]
+        elif value.startswith('@{') and value.endswith('}'):
+            if value[2:-1] in self.constants:
+                return self.constants[value[2:-1]]
         elif self.is_number(value):
             value = float(value)
             if value.is_integer():
