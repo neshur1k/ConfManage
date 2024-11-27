@@ -66,7 +66,6 @@ class ConfigParser:
         elements = []
         buffer = ""
         nested_level = 0
-
         for char in value:
             if char == ';' and nested_level == 0:
                 elements.append(self.get_value(buffer.strip()))
@@ -77,9 +76,10 @@ class ConfigParser:
                 elif char == ']':
                     nested_level -= 1
                 buffer += char
-
         if buffer:
             elements.append(self.get_value(buffer.strip()))
+        if None in elements:
+            return None
         return elements
 
     def print_yaml(self):

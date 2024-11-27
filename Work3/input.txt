@@ -1,7 +1,6 @@
 ! Comment
 def A = q(string)
-def B = 12.5
-def C = 12
-def D = @{A}
-def E = A
-def ARR = [1; 2; [3; 4; q(hello)]; @{B}]
+def B = 12
+def c = 0
+def ARR = [1; 2; [3; q(hello)]; @{B}]
+def NEWARR = [1 2 3]
