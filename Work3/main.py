@@ -7,11 +7,13 @@ class ConfigParser:
     def __init__(self, input_file):
         self.input_file = input_file
         self.constants = {}
+        self.error = False
 
     def read_input_file(self):
         with open(self.input_file, 'r') as file:
             for line in file:
-                self.process_line(line.strip())
+                if not self.error:
+                    self.process_line(line.strip())
 
     def process_line(self, line):
         if line.startswith('!'):
@@ -29,14 +31,18 @@ class ConfigParser:
                 value = self.get_value(value)
                 if value is None:
                     print(f'Ошибка: {line}. Константа задана некорректно')
+                    self.error = True
                 else:
                     self.constants[name] = value
             else:
                 print(f'Ошибка: {line}. Некорректное имя константы')
+                self.error = True
         elif initialization.count('=') > 1:
             print(f'Ошибка: {line}. Несколько знаков =')
+            self.error = True
         else:
             print(f'Ошибка: {line}. Нет инициализации')
+            self.error = True
 
     def is_number(self, value):
         try:
@@ -83,8 +89,9 @@ class ConfigParser:
         return elements
 
     def print_yaml(self):
-        yaml_data = yaml.dump(self.constants)
-        print(yaml_data)
+        if not self.error:
+            yaml_data = yaml.dump(self.constants)
+            print(yaml_data)
 
 
 def main():

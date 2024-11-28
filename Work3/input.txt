@@ -1,6 +1,8 @@
 ! Comment
 def A = q(string)
 def B = 12
-def c = 0
+! def c = 0
 def ARR = [1; 2; [3; q(hello)]; @{B}]
-def NEWARR = [1 2 3]
+! def NEWARR = [1 2 3]
+
+[ @{A}; @{B}; @{ARR} ]
