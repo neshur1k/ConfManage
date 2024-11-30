@@ -100,6 +100,7 @@ class ConfigParser:
                     self.to_convert[element] = self.constants[element]
                 else:
                     print(f'Ошибка: {line}. Такой константы не существует')
+                    self.error = True
             else:
                 print(f'Ошибка: {line}. Неправильно записано значение для вычисления')
                 self.error = True
