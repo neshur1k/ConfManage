@@ -7,6 +7,7 @@ class ConfigParser:
     def __init__(self, input_file):
         self.input_file = input_file
         self.constants = {}
+        self.to_convert = {}
         self.error = False
 
     def read_input_file(self):
@@ -20,6 +21,8 @@ class ConfigParser:
             pass
         elif line.startswith('def '):
             self.process_def(line)
+        elif line.startswith('[') and line.endswith(']'):
+            self.process_final(line[1:-1], line)
 
     def process_def(self, line):
         initialization = line[4:]
@@ -88,9 +91,22 @@ class ConfigParser:
             return None
         return elements
 
+    def process_final(self, arr, line):
+        for element in arr.split(';'):
+            element = element.strip()
+            if element.startswith('@{') and element.endswith('}'):
+                element = element[2:-1]
+                if element in self.constants:
+                    self.to_convert[element] = self.constants[element]
+                else:
+                    print(f'Ошибка: {line}. Такой константы не существует')
+            else:
+                print(f'Ошибка: {line}. Неправильно записано значение для вычисления')
+                self.error = True
+
     def print_yaml(self):
         if not self.error:
-            yaml_data = yaml.dump(self.constants)
+            yaml_data = yaml.dump(self.to_convert)
             print(yaml_data)
 
 

@@ -5,4 +5,4 @@ def B = 12
 def ARR = [1; 2; [3; q(hello)]; @{B}]
 ! def NEWARR = [1 2 3]
 
-[ @{A}; @{B}; @{ARR} ]
+[@{A}; @{B}; @{ARR}]
