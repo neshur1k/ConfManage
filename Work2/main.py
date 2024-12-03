@@ -1,4 +1,5 @@
 import argparse
+import requests
 
 
 class DependencyVisualizer:
@@ -9,6 +10,16 @@ class DependencyVisualizer:
         self.max_depth = max_depth
         self.repository_url = repository_url.rstrip('/')
         self.dependencies = {}
+
+    def fetch_package_json(self, package_name):
+        url = f"{self.repository_url}/{package_name}"
+        response = requests.get(url)
+        if response.status_code == 200:
+            data = response.json()
+            if "versions" in data:
+                latest_version = data["dist-tags"]["latest"]
+                return data["versions"][latest_version]
+        return None
 
 
 def main():
