@@ -34,6 +34,14 @@ class DependencyVisualizer:
         for dep in deps:
             self.fetch_dependencies(dep, depth + 1)
 
+    def generate_dot_code(self):
+        lines = ["digraph G {"]
+        for package, deps in self.dependencies.items():
+            for dep in deps:
+                lines.append(f'  "{package}" -> "{dep}";')
+        lines.append("}")
+        return "\n".join(lines)
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -45,6 +53,11 @@ def main():
     args = parser.parse_args()
 
     visualizer = DependencyVisualizer(args.graphviz, args.package, args.output, args.max_depth, args.repository)
+    visualizer.fetch_dependencies(visualizer.package_name)
+    dot_code = visualizer.generate_dot_code()
+    print(dot_code)
+    with open(visualizer.output_file, 'w') as file:
+        file.write(dot_code)
 
 
 if __name__ == "__main__":
