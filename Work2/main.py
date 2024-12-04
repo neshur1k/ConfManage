@@ -21,6 +21,19 @@ class DependencyVisualizer:
                 return data["versions"][latest_version]
         return None
 
+    def fetch_dependencies(self, package_name, depth=0):
+        if depth > self.max_depth:
+            return
+        if package_name in self.dependencies:
+            return
+        package_json = self.fetch_package_json(package_name)
+        if package_json is None:
+            return
+        deps = package_json.get("dependencies", {})
+        self.dependencies[package_name] = deps
+        for dep in deps:
+            self.fetch_dependencies(dep, depth + 1)
+
 
 def main():
     parser = argparse.ArgumentParser()
