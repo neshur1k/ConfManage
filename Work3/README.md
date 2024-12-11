@@ -29,7 +29,7 @@ def имя = значение<br><br>
 
 Пример использования:<br>
 ![image](https://github.com/user-attachments/assets/71afc37d-01d5-4492-af3d-c22a50dda474)
-Входной текст на учебном конфигурационном языке:
+<br>Входной текст на учебном конфигурационном языке:
 <code>
 ! Comment
 def A = q(string)
