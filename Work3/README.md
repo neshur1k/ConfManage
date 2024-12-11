@@ -1,4 +1,4 @@
-<b>Домашнее задание 1. Вариант 2</b><br>
+<b>Домашнее задание 3. Вариант 2</b><br>
 <i>Ангаткин Александр Денисович, ИКБО-60-23</i><br>
 Программа представляет собой инструмент командной строки для учебного конфигурационного
 языка, синтаксис которого приведен далее. Этот инструмент преобразует текст из
@@ -25,4 +25,30 @@ q(Это строка)<br><br>
 def имя = значение<br><br>
 Вычисление константы на этапе трансляции:<br>
 @{имя}<br>
-Результатом вычисления константного выражения является значение.
+Результатом вычисления константного выражения является значение.<br><br>
+
+Пример использования:
+![image](https://github.com/user-attachments/assets/71afc37d-01d5-4492-af3d-c22a50dda474)
+Входной текст на учебном конфигурационном языке:
+<code>
+! Comment
+def A = q(string)
+def B = 12
+! def c = 0
+def ARR = [1; 2; [3; q(hello)]; @{B}]
+! def NEWARR = [1 2 3]
+def D = 5
+
+[@{A}; @{B}; @{ARR}]
+</code>
+
+<br>Тесты написаны с помощью библиотеки unittest. Они покрывают функции read_input_file, process_line, process_def, is_number, get_value, process_arr, process_final, print_yaml. Все конструкции учебного конфигурационного языка с учетом их
+возможной вложенности покрыты тестами. Представлены 3
+примера описания конфигураций из разных предметных областей: настройка сервера, настройка робота, финансовые расчёты.
+<br>Результаты прогона тестов:<br>
+![image](https://github.com/user-attachments/assets/84fa486a-3310-46ff-889c-9e2e0e657f72)
+<br>Код тестов:<br>
+![image](https://github.com/user-attachments/assets/376b895e-cfd3-4ca2-b144-52f38e0b6fc9)
+![image](https://github.com/user-attachments/assets/2ce6eea5-2014-4038-b86c-4426b0c13ed5)
+![image](https://github.com/user-attachments/assets/e1ff62af-527e-4884-bbc0-11cdcaf16fde)
+![image](https://github.com/user-attachments/assets/33af70a9-2829-436e-84bc-d2b0d1b95a38)
