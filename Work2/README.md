@@ -120,7 +120,7 @@ digraph G {
   "content-disposition" -> "safe-buffer";
 }
 </code>
-<br><br>Тесты написаны с помощью библиотеки unittest. Они покрывают функции fetch_package_json, fetch_dependencies, generate_dot_code.
+Тесты написаны с помощью библиотеки unittest. Они покрывают функции fetch_package_json, fetch_dependencies, generate_dot_code.
 <br>Результаты прогона тестов:<br>
 ![image](https://github.com/user-attachments/assets/b3d8bbdd-a595-4793-a560-7f61a1d2d19b)
 <br>Код тестов:<br>
